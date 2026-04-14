@@ -1,0 +1,158 @@
+{
+  "name": "AI Digest → Telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 10 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "dd5d4da7-50a0-4c9e-83b0-a81d2c2e4c84",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"api_key\": \"YOUR_TAVILY_API_KEY\",\n  \"query\": \"artificial intelligence AI news last 24 hours\",\n  \"search_depth\": \"advanced\",\n  \"max_results\": 10,\n  \"days\": 1,\n  \"include_answer\": false,\n  \"include_raw_content\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        192,
+        0
+      ],
+      "id": "626991c0-8889-423b-aa17-ed8afe8915b5",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ 'Ты редактор AI-дайджеста. Проанализируй новости и составь дайджест на русском языке.\\n\\nСТРУКТУРА ДАЙДЖЕСТА:\\n\\n1. В самом начале напиши краткое резюме (2-3 предложения) — что сегодня происходит в мире AI в целом.\\n\\n2. Затем топ-5 новостей в формате:\\n[🔥 ГОРЯЧАЯ] или [📌 ОБЫЧНАЯ]\\n🔹 Заголовок на русском\\nОписание (2-3 предложения на русском)\\nИсточник: название | ссылка\\n\\n3. В конце: 💡 Главный тренд дня — одно предложение.\\n\\nДанные: ' + JSON.stringify($json.results) }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        400,
+        0
+      ],
+      "id": "0a6869e2-cbb3-4b1e-8328-27735fbbbe8d",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-haiku-4-5-20251001",
+          "mode": "list",
+          "cachedResultName": "Claude Haiku 4.5"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        544,
+        192
+      ],
+      "id": "6e76d13d-9773-4cc9-90d8-665abecda9dc",
+      "name": "Anthropic Chat Model"
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID",
+        "text": "=={{ $json.text }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        752,
+        0
+      ],
+      "id": "a0e55068-d532-4007-8ab8-37e38b0974f6",
+      "name": "Send a text message"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "id": "jUfGu9Ylo2NUGsKb",
+  "tags": []
+}

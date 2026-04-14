@@ -1,0 +1,1402 @@
+{
+  "name": "Project 1 — CRM + Proposal Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "new-lead",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6bd911b8-9236-4245-89e0-10f19588d726",
+      "name": "INPUT — Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c54c82a0-90c5-4a5d-83cc-da14775f367e",
+              "name": "name",
+              "value": "={{ $json.body['Full Name'] }}",
+              "type": "string"
+            },
+            {
+              "id": "53b9d482-6dab-44d4-8359-18af9ae93227",
+              "name": "email",
+              "value": "={{ $json.body.Email }}",
+              "type": "string"
+            },
+            {
+              "id": "37fe4028-aac4-4362-a631-3c01507a216d",
+              "name": "company",
+              "value": "={{ $json.body.Company }}",
+              "type": "string"
+            },
+            {
+              "id": "1c46fe2d-29ef-4ba0-b602-63112797238d",
+              "name": "website",
+              "value": "={{ $json.body.Website }}",
+              "type": "string"
+            },
+            {
+              "id": "a491737d-04a9-494b-8b0b-7613e22e2694",
+              "name": "budget",
+              "value": "={{ $json.body['Budget ($)'] }}",
+              "type": "string"
+            },
+            {
+              "id": "656d4f0e-1c7e-41a0-a98a-06003e44acf4",
+              "name": "description",
+              "value": "={{ $json.body['Project description'] }}",
+              "type": "string"
+            },
+            {
+              "id": "e4fb0af8-31be-4db8-b34d-cd2c0d4b19f3",
+              "name": "country",
+              "value": "={{ $json.body.Country }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        -256
+      ],
+      "id": "a22d149e-f84c-4a9e-b271-5beb880321ec",
+      "name": "PROCESS — Parse Lead Data"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk",
+          "mode": "list",
+          "cachedResultName": "LeadsRegistry",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "created at": "={{ $now }}",
+            "name": "={{ $json.name }}",
+            "company": "={{ $json.company }}",
+            "website": "={{ $json.website }}",
+            "budget": "={{ $json.budget }}",
+            "description": "={{ $json.description }}",
+            "country": "={{ $json.country }}",
+            "email": "={{ $json.email }}"
+          },
+          "matchingColumns": [
+            "email"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created at",
+              "displayName": "created at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "website",
+              "displayName": "website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "budget",
+              "displayName": "budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "crm_contact_id",
+              "displayName": "crm_contact_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "crm_deal_id",
+              "displayName": "crm_deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proposal_doc_url",
+              "displayName": "proposal_doc_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pdf_url",
+              "displayName": "pdf_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email_status",
+              "displayName": "email_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "error_log",
+              "displayName": "error_log",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        0
+      ],
+      "id": "5830a86a-7f0c-4a58-9fc4-58d39bc49289",
+      "name": "LOG — Save Lead to Sheets"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $json.email }}",
+        "additionalFields": {
+          "companyName": "={{ $json.company }}",
+          "firstName": "={{ $json.name }}",
+          "websiteUrl": "={{ $json.website }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "3b89c947-d1f2-4b90-a041-cb74c7b8f3d2",
+      "name": "CRM — Create Contact"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk",
+          "mode": "list",
+          "cachedResultName": "LeadsRegistry",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ $json.properties.email.value }}",
+            "crm_contact_id": "={{ $json.vid }}"
+          },
+          "matchingColumns": [
+            "email"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created at",
+              "displayName": "created at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "website",
+              "displayName": "website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "budget",
+              "displayName": "budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "crm_contact_id",
+              "displayName": "crm_contact_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "crm_deal_id",
+              "displayName": "crm_deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proposal_doc_url",
+              "displayName": "proposal_doc_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pdf_url",
+              "displayName": "pdf_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email_status",
+              "displayName": "email_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "error_log",
+              "displayName": "error_log",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        832,
+        0
+      ],
+      "id": "62a21e96-608c-4a14-8ef6-f57da53102a1",
+      "name": "LOG — Save Contact ID"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "resource": "deal",
+        "stage": "appointmentscheduled",
+        "additionalFields": {
+          "amount": "={{ $('PROCESS — Parse Lead Data').item.json.budget }}",
+          "associatedVids": "={{ $('CRM — Create Contact').item.json.vid }}",
+          "description": "={{ $('PROCESS — Parse Lead Data').item.json.description }}",
+          "dealName": "={{ $('PROCESS — Parse Lead Data').item.json.company }} — Automation Project"
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "fc8232fb-0319-4e3f-b04e-941ef7abc139",
+      "name": "CRM — Create Deal"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk",
+          "mode": "list",
+          "cachedResultName": "LeadsRegistry",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ $('PROCESS — Parse Lead Data').item.json.email }}",
+            "crm_deal_id": "={{ $json.dealId }}"
+          },
+          "matchingColumns": [
+            "email"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created at",
+              "displayName": "created at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "website",
+              "displayName": "website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "budget",
+              "displayName": "budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "crm_contact_id",
+              "displayName": "crm_contact_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "crm_deal_id",
+              "displayName": "crm_deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proposal_doc_url",
+              "displayName": "proposal_doc_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pdf_url",
+              "displayName": "pdf_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email_status",
+              "displayName": "email_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "error_log",
+              "displayName": "error_log",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1248,
+        0
+      ],
+      "id": "4913dc7f-e623-4fb5-8e7e-406ad7ad44ab",
+      "name": "LOG — Save Deal ID"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "YOUR_ANTHROPIC_API_KEY"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-sonnet-4-5\",\n  \"max_tokens\": 1024,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"You are Parvin, an n8n automation consultant. Write a highly personalized, concise proposal email for this specific lead. Use their exact project description to show you understood their needs. Sound human and direct, not corporate.\\n\\nLead info:\\n- Name: {{ $('PROCESS — Parse Lead Data').item.json.name }}\\n- Company: {{ $('PROCESS — Parse Lead Data').item.json.company }}\\n- Website: {{ $('PROCESS — Parse Lead Data').item.json.website }}\\n- Budget: ${{ $('PROCESS — Parse Lead Data').item.json.budget }}\\n- Their project need: {{ $('PROCESS — Parse Lead Data').item.json.description }}\\n- Country: {{ $('PROCESS — Parse Lead Data').item.json.country }}\\n\\nRules:\\n- First line must be 'Subject: [write specific subject]'\\n- Reference their EXACT project need in the first paragraph\\n- Mention 2-3 SPECIFIC automation tools relevant to their need (n8n, HubSpot, Google Sheets, Telegram, etc)\\n- Propose ONE clear next step\\n- Sign as 'Parvin Guseynov | n8n Automation Specialist'\\n- Max 150 words\\n- No bullet points, write in paragraphs\\n- Sound like a real person, not a template\\n- NEVER mention Zapier, Make.com or any other tool except n8n\\n- Always mention n8n as the primary automation tool\\n- Sign exactly as: 'Parvin Guseynov | n8n Automation Specialist'\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1456,
+        -240
+      ],
+      "id": "1c1e0830-4847-4e95-a5dd-c073abc682b2",
+      "name": "AI — Generate Email (Claude)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "490985c1-17c9-4307-a1c1-483656c65917",
+              "name": "email_body",
+              "value": "={{ $json.content[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "78538aff-cb54-42dc-94a5-a2915cd26206",
+              "name": "email_subject",
+              "value": "={{ $json.content[0].text.split('\\n')[0].replace('Subject: ', '') }}",
+              "type": "string"
+            },
+            {
+              "id": "2d9760d2-c342-4e4f-8531-b177e0999335",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1664,
+        -240
+      ],
+      "id": "b0ce626d-c584-4b8c-9f68-1ecd6b02fa64",
+      "name": "PROCESS — Extract Email Text"
+    },
+    {
+      "parameters": {
+        "operation": "copy",
+        "fileId": {
+          "__rl": true,
+          "value": "1aPoM9dCOGMQqvH2RUH95niuDo4bGg0pgAShNNVe-dbU",
+          "mode": "list",
+          "cachedResultName": "Proposal Template",
+          "cachedResultUrl": "https://docs.google.com/document/d/1aPoM9dCOGMQqvH2RUH95niuDo4bGg0pgAShNNVe-dbU/edit?usp=drivesdk"
+        },
+        "name": "=Proposal —  {{ $('PROCESS — Parse Lead Data').item.json.company }} — {{ $now.toFormat('yyyy-MM-dd') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1872,
+        0
+      ],
+      "id": "20a2e55b-fecf-43c3-9d48-83f0e7859acc",
+      "name": "DOCS — Copy Proposal Template"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{client_name}}",
+              "replaceText": "={{ $('PROCESS — Parse Lead Data').item.json.name }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "{{company}}",
+              "replaceText": "={{ $('PROCESS — Parse Lead Data').item.json.company }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "{{date}}",
+              "replaceText": "={{ $now.toFormat('yyyy-MM-dd') }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "{{description}}",
+              "replaceText": "={{ $('PROCESS — Parse Lead Data').item.json.description }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "{{budget}}",
+              "replaceText": "={{ $('PROCESS — Parse Lead Data').item.json.budget }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        2080,
+        0
+      ],
+      "id": "6648af43-c831-4c23-ae93-ff6e4c7b6f61",
+      "name": "DOCS — Fill Proposal Placeholders"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk",
+          "mode": "list",
+          "cachedResultName": "LeadsRegistry",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ $('PROCESS — Parse Lead Data').item.json.email }}",
+            "proposal_doc_url": "=https://docs.google.com/document/d/{{ $('DOCS — Copy Proposal Template').item.json.id }}"
+          },
+          "matchingColumns": [
+            "email"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created at",
+              "displayName": "created at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "website",
+              "displayName": "website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "budget",
+              "displayName": "budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "crm_contact_id",
+              "displayName": "crm_contact_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "crm_deal_id",
+              "displayName": "crm_deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proposal_doc_url",
+              "displayName": "proposal_doc_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pdf_url",
+              "displayName": "pdf_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email_status",
+              "displayName": "email_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "error_log",
+              "displayName": "error_log",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2080,
+        272
+      ],
+      "id": "c7303614-f5e5-47ed-89b9-1b2079c33fe4",
+      "name": "LOG — Save Proposal URL"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('PROCESS — Parse Lead Data').item.json.email }}",
+        "subject": "={{ $json.email_subject }}",
+        "message": "=<div style=\"font-family: Arial, sans-serif; max-width: 600px;\">\n  <h2 style=\"color: #FF6B35;\">n8n Automation Proposal</h2>\n  <p>Hi {{ $('PROCESS — Parse Lead Data').item.json.name }},</p>\n  <p>{{ $json.email_body }}</p>\n  <hr>\n  <p style=\"color: #888; font-size: 12px;\">\n    Sent automatically via n8n\n  </p>\n</div>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2304,
+        272
+      ],
+      "id": "08db6e1b-d569-4569-8376-7e98894fea38",
+      "name": "OUTPUT — Send Email (Gmail)"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk",
+          "mode": "list",
+          "cachedResultName": "LeadsRegistry",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dGyX00s7GCDBlPu0KKhUwY49FIdtwO_WvFT6VpwR9dk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ $('PROCESS — Parse Lead Data').item.json.email }}",
+            "email_status": "={{ $json.labelIds[0] }}"
+          },
+          "matchingColumns": [
+            "email"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created at",
+              "displayName": "created at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "website",
+              "displayName": "website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "budget",
+              "displayName": "budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "crm_contact_id",
+              "displayName": "crm_contact_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "crm_deal_id",
+              "displayName": "crm_deal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proposal_doc_url",
+              "displayName": "proposal_doc_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pdf_url",
+              "displayName": "pdf_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email_status",
+              "displayName": "email_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "error_log",
+              "displayName": "error_log",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1584,
+        272
+      ],
+      "id": "6b306d80-e8d6-4d76-804d-335016353aef",
+      "name": "LOG — Update Email Status"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "file",
+        "operation": "share",
+        "fileId": {
+          "__rl": true,
+          "value": "=",
+          "mode": "id"
+        },
+        "permissionsUi": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2288,
+        0
+      ],
+      "id": "f91e134f-2ef7-490b-998a-35ebf97079b4",
+      "name": "Share file"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "INPUT — Webhook": {
+      "main": [
+        [
+          {
+            "node": "PROCESS — Parse Lead Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PROCESS — Parse Lead Data": {
+      "main": [
+        [
+          {
+            "node": "LOG — Save Lead to Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LOG — Save Lead to Sheets": {
+      "main": [
+        [
+          {
+            "node": "CRM — Create Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM — Create Contact": {
+      "main": [
+        [
+          {
+            "node": "LOG — Save Contact ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LOG — Save Contact ID": {
+      "main": [
+        [
+          {
+            "node": "CRM — Create Deal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM — Create Deal": {
+      "main": [
+        [
+          {
+            "node": "LOG — Save Deal ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LOG — Save Deal ID": {
+      "main": [
+        [
+          {
+            "node": "AI — Generate Email (Claude)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI — Generate Email (Claude)": {
+      "main": [
+        [
+          {
+            "node": "PROCESS — Extract Email Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PROCESS — Extract Email Text": {
+      "main": [
+        [
+          {
+            "node": "DOCS — Copy Proposal Template",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DOCS — Copy Proposal Template": {
+      "main": [
+        [
+          {
+            "node": "DOCS — Fill Proposal Placeholders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DOCS — Fill Proposal Placeholders": {
+      "main": [
+        [
+          {
+            "node": "Share file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LOG — Save Proposal URL": {
+      "main": [
+        [
+          {
+            "node": "OUTPUT — Send Email (Gmail)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OUTPUT — Send Email (Gmail)": {
+      "main": [
+        [
+          {
+            "node": "LOG — Update Email Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Share file": {
+      "main": [
+        [
+          {
+            "node": "LOG — Save Proposal URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "id": "4P7hDCbehU9LhUtl",
+  "tags": []
+}
