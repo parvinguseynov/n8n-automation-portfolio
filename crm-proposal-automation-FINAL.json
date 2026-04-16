@@ -1214,15 +1214,19 @@
     },
     {
       "parameters": {
-        "authentication": "oAuth2",
-        "resource": "file",
         "operation": "share",
         "fileId": {
           "__rl": true,
-          "value": "=",
+          "value": "={{ $('DOCS — Copy Proposal Template').item.json.id }}",
           "mode": "id"
         },
-        "permissionsUi": {},
+        "permissionsUi": {
+          "permissionsValues": {
+            "role": "reader",
+            "type": "user",
+            "emailAddress": "={{ $('PROCESS — Parse Lead Data').item.json.email }}"
+          }
+        },
         "options": {}
       },
       "type": "n8n-nodes-base.googleDrive",
