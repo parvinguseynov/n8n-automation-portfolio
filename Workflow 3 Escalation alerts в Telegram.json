@@ -1,0 +1,138 @@
+{
+  "name": "Workflow 3 Escalation alerts в Telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ddae926f-ef9c-468a-ac3f-40b34a5c0aad",
+      "name": "Schedule Trigger",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1wQ-bl6D9ZnS0HJ0N3uCbLXRXruOwWpQ7ZlsJyC1UHfw",
+          "mode": "list",
+          "cachedResultName": "JobsRegistry",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wQ-bl6D9ZnS0HJ0N3uCbLXRXruOwWpQ7ZlsJyC1UHfw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1624887010,
+          "mode": "list",
+          "cachedResultName": "JobsRegistry",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wQ-bl6D9ZnS0HJ0N3uCbLXRXruOwWpQ7ZlsJyC1UHfw/edit#gid=1624887010"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "a2ad579e-bf76-4608-a79a-f3a1eba90f8d",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ET2DCcwVvYug9rG9",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\n\nreturn items.filter(item => {\n  const status = item.json.status;\n  const createdAt = new Date(item.json.created_at);\n  const hoursElapsed = (now - createdAt) / (1000 * 60 * 60);\n  \n  return status === 'In Progress' && hoursElapsed > 24;\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "94f578d7-ba2a-4103-ad0b-a1f0075b9523",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"chat_id\": \"<YOUR_CHAT_ID>\",\n  \"text\": \"🚨 *OVERDUE JOB ALERT*\\n\\n*Job:* {{ $json.job_id }} — {{ $json.client_name }}\\n*Type:* {{ $json.job_type }}\\n*Address:* {{ $json.address }}\\n*Assigned to:* {{ $json.assigned_to }}\\n*Due date:* {{ $json.due_date }}\\n*Status:* {{ $json.status }}\\n*Notes:* {{ $json.notes }}\\n\\n⏰ Job has been In Progress for over 24 hours.\",\n  \"parse_mode\": \"Markdown\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        624,
+        0
+      ],
+      "id": "51825102-290c-4658-8e41-f76b770ec6c4",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d0662ef9-a294-47c4-9a7f-c768ed87c2ee",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": ""
+  },
+  "id": "",
+  "tags": []
+}
